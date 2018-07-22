@@ -1,15 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: abdou
- * Date: 7/22/18
- * Time: 3:35 PM
- */
 
-namespace AppBundle\Services\Handlers\InterFaces;
+namespace AppBundle\Services\Handlers\Interfaces;
 
+use \DateTime;
 
-class HotelInterface
+interface HotelInterface
 {
+    public function searchByAvailability(DateTime $availableFrom, DateTime $availableTo);
 
+    public function searchByName(string $name);
+
+    public function searchByCity(string $city);
+
+    public function searchByPrice(float $from, float $to);
+
+    public function sortBy(string $sortFild);
 }
