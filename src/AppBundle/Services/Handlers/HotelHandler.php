@@ -36,7 +36,7 @@ class HotelHandler extends HotelAPI implements HotelInterface
     public function __construct(HotelMapper $hotelMapper)
     {
         $this->hotelMapper = $hotelMapper;
-        $this->setHotels();
+        $this->hotels = $this->hotelMapper->convertJsonToArrayCollection($this->fetch());
     }
 
 
@@ -49,10 +49,13 @@ class HotelHandler extends HotelAPI implements HotelInterface
         return "http://api.myjson.com/bins/tl0bp";
     }
 
-    public function setHotels()
+    public function setHotels(ArrayCollection $hotels)
     {
-        if(!$this->hotels) {
+
+        if(!$this->hotels || empty($hotels)) {
             $this->hotels = $this->hotelMapper->convertJsonToArrayCollection($this->fetch());
+        }else {
+            $this->hotels = $hotels;
         }
     }
 
@@ -65,6 +68,11 @@ class HotelHandler extends HotelAPI implements HotelInterface
         return $this->hotels;
     }
 
+    /**
+     * provide search by query string
+     * @param $queryParam
+     * @return array
+     */
     public function searchByQuery($queryParam){
         $this->criteria = Criteria::create();
 
@@ -98,10 +106,16 @@ class HotelHandler extends HotelAPI implements HotelInterface
         return ['status' => true , 'hotels' => $result];
     }
 
-    public function searchByAvailability(DateTime $availableFrom, DateTime $availableTo)
+    /**
+     * provide search criteria by availability
+     * @param DateTime $availableFrom
+     * @param DateTime $availableTo
+     * @return ArrayCollection|null
+     */
+    public function searchByAvailability(string $availableFrom, string $availableTo)
     {
-        $from = $availableFrom->getTimestamp();
-        $to = $availableTo->getTimestamp();
+        $from = strtotime($availableFrom);
+        $to = strtotime($availableTo);
 
         if ($from > $to) {
             return null;
@@ -124,22 +138,33 @@ class HotelHandler extends HotelAPI implements HotelInterface
 
                 return null;
         });
-
-        return $this->hotels;
     }
 
+    /**
+     * provide search by name
+     * @param string $name
+     */
     public function searchByName(string $name)
     {
         $condition = Criteria::expr()->eq('name', $name);
         $this->criteria->andWhere($condition);
     }
 
+    /**
+     * provide search by city
+     * @param string $city
+     */
     public function searchByCity(string $city)
     {
         $condition = Criteria::expr()->eq('city', $city);
         $this->criteria->andWhere($condition);
     }
 
+    /**
+     * provide search by price range
+     * @param float $from
+     * @param float $to
+     */
     public function searchByPrice(float $from, float $to)
     {
         $priceFromCondition = Criteria::expr()->gte('price', $from);
@@ -147,6 +172,10 @@ class HotelHandler extends HotelAPI implements HotelInterface
         $this->criteria->andWhere($priceFromCondition)->andWhere($priceToCondition);
     }
 
+    /**
+     * provide sort by (name - price)
+     * @param string $sort
+     */
     public function sortBy(string $sort)
     {
         if(key_exists($sort, $this->sortBy)){

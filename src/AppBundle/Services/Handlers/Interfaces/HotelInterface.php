@@ -2,11 +2,10 @@
 
 namespace AppBundle\Services\Handlers\Interfaces;
 
-use \DateTime;
 
 interface HotelInterface
 {
-    public function searchByAvailability(DateTime $availableFrom, DateTime $availableTo);
+    public function searchByAvailability(string $availableFrom, string $availableTo);
 
     public function searchByName(string $name);
 

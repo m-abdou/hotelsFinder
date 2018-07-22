@@ -23,8 +23,8 @@ class HotelType extends AbstractType
             ->add('city', TextType::class)
             ->add('price_from', NumberType::class)
             ->add('price_to', NumberType::class)
-            ->add('available_from', DateType::class)
-            ->add('available_to', DateType::class)
+            ->add('available_from', TextType::class)
+            ->add('available_to', TextType::class)
             ->add('sort_by', TextType::class)
         ;
     }

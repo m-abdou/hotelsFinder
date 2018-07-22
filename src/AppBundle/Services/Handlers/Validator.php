@@ -21,7 +21,7 @@ class Validator
      *
      * @return array
      */
-    public function getErrorMessages(Form $form)
+    private function getErrorMessages(Form $form)
     {
         $errors = array();
 

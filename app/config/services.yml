@@ -41,12 +41,14 @@ services:
     service.handler.hotel:
         class: AppBundle\Services\Handlers\HotelHandler
         autowire: false
+        public: true
         arguments:
           - '@service.handler.hotel.mapper'
 
     service.handler.validator:
         class: AppBundle\Services\Handlers\Validator
         autowire: false
+        public: true
 
     service.manager:
         class: AppBundle\Services\Manager

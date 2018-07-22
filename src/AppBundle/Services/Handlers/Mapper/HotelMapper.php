@@ -30,9 +30,7 @@ class HotelMapper
      */
     public function convertJsonToArrayCollection($jsonResponse):ArrayCollection
     {
-        $this->hotels = $this->serializer->deserialize($jsonResponse, HotelMapper::class, 'json')->hotels;
-
-        return $this->hotels;
+        return $this->serializer->deserialize($jsonResponse, HotelMapper::class, 'json')->hotels;
     }
 
     /**
