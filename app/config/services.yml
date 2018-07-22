@@ -33,3 +33,30 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    service.handler.hotel.mapper:
+        class: AppBundle\Services\Handlers\Mapper\HotelMapper
+        autowire: false
+
+    service.handler.hotel:
+        class: AppBundle\Services\Handlers\HotelHandler
+        autowire: false
+        arguments:
+          - '@service.handler.hotel.mapper'
+
+    service.handler.validator:
+        class: AppBundle\Services\Handlers\Validator
+        autowire: false
+
+    service.manager:
+        class: AppBundle\Services\Manager
+        autowire: false
+        public: true
+        arguments:
+          - '@service.handler.hotel'
+          - '@service.handler.validator'
+
+    service.apiHelper:
+        class: AppBundle\Services\APIHelper
+        autowire: false
+        public: true
